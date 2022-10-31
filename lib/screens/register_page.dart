@@ -140,8 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (_) => MainPage(
-                                                        restorationId: "")),
+                                                    builder: (_) => MainPage()),
                                                 (route) => false);
                                           },
                                           child: Text(

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/screens/start_screen_page.dart';
 import 'package:todo_app/utils/colors.dart';
 import 'package:todo_app/utils/images.dart';
-import 'package:flutter/widgets.dart';
+
+import '../widgets/lists_widget.dart';
 
 class OnBoardingPage extends StatefulWidget {
   @override
@@ -18,105 +19,31 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     _pageController.dispose();
     super.dispose();
   }
-  List<Widget> _list = <Widget>[
+
+  List<Widget> _list = [
+    ListWidget(
+      "Manage your tasks",
+      "You can easily manage all of your daily \n               tasks in DoMe for free",
+      MyImages.im_task,
+    ),
     Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: [
-            Image.asset(
-              MyImages.im_task,
-              width: 250,
-            ),
-            SizedBox(
-              height: 105,
-            ),
-            Text(
-              "Manage your tasks",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 32,
-                  color: Colors.white),
-            ),
-            SizedBox(
-              height: 42,
-            ),
-            Text(
-              "You can easily manage all of your daily \n               tasks in DoMe for free",
-              style: TextStyle(fontSize: 18, color: Colors.white70),
-            )
-          ],
-        ),
+      padding: const EdgeInsets.only(top: 50),
+      child: ListWidget(
+        "Create daily routine",
+        "        In Uptodo  you can create your \npersonalized routine to stay productive",
+        MyImages.im_routine,
       ),
     ),
     Padding(
-      padding: const EdgeInsets.only(top: 150),
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: [
-            Image.asset(
-              MyImages.im_routine,
-              fit: BoxFit.cover,
-              width: 250,
-            ),
-            SizedBox(
-              height: 105,
-            ),
-            Text(
-              "Create daily routine",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 32,
-                  color: Colors.white),
-            ),
-            SizedBox(
-              height: 42,
-            ),
-            Text(
-              "        In Uptodo  you can create your \npersonalized routine to stay productive",
-              style: TextStyle(fontSize: 18, color: Colors.white70),
-            )
-          ],
-        ),
-      ),
-    ),
-    Padding(
-      padding: const EdgeInsets.only(top: 200),
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: [
-            Image.asset(
-              MyImages.im_organazed_task,
-              width: 250,
-            ),
-            SizedBox(
-              height: 82,
-            ),
-            Text(
-              "Orgonaize your tasks",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 32,
-                  color: Colors.white),
-            ),
-            SizedBox(
-              height: 42,
-            ),
-            Text(
-              "     You can organize your daily tasks by \nadding your tasks into separate categories",
-              style: TextStyle(fontSize: 18, color: Colors.white70),
-            )
-          ],
-        ),
+      padding: const EdgeInsets.only(top: 76),
+      child: ListWidget(
+        "Orgonaize your tasks",
+        "     You can organize your daily tasks by \nadding your tasks into separate categories",
+        MyImages.im_organazed_task,
       ),
     ),
   ];
+
   int _curr = 0;
   int num = 0;
 
@@ -142,12 +69,23 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 24, right: 250,),
-              child: TextButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>StartScreenPage()));
-              }, child: Text("SKIP", style: TextStyle(fontSize: 20, color: Colors.white38),)),
+              padding: const EdgeInsets.only(
+                top: 24,
+                right: 250,
+              ),
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => StartScreenPage()));
+                  },
+                  child: Text(
+                    "SKIP",
+                    style: TextStyle(fontSize: 20, color: Colors.white38),
+                  )),
             ),
-            SizedBox(height: 430,),
+            SizedBox(
+              height: 430,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 40),
               child: Container(
@@ -177,7 +115,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 ),
               ),
             ),
-            SizedBox(height: 230,),
+            SizedBox(
+              height: 230,
+            ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -192,58 +132,26 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             MaterialPageRoute(builder: (context) => exit(0)));
                       },
                       child: const Text('Back',
-                          style: TextStyle(fontSize: 20, color: Colors.white54)),
+                          style:
+                              TextStyle(fontSize: 20, color: Colors.white54)),
                     ),
                   ),
                   Container(
-
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: MyColors.C_8875FF),
-                        onPressed: () {
-                          _pageController.nextPage(duration: const Duration(seconds: 1), curve: Curves.ease);
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenPage(),));
-                        },
-                        child: Text('Next',
-                            style: TextStyle(
-                              fontSize: 20,
-                            )),
-                      ))
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: MyColors.C_8875FF),
+                    onPressed: () {
+                      _pageController.nextPage(
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.ease);
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenPage(),));
+                    },
+                    child: Text('Next',
+                        style: TextStyle(
+                          fontSize: 20,
+                        )),
+                  ))
                 ]),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget ListWidget(){
-    return  Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: [
-            Image.asset(
-              MyImages.im_task,
-              width: 250,
-            ),
-            SizedBox(
-              height: 105,
-            ),
-            Text(
-              "Manage your tasks",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 32,
-                  color: Colors.white),
-            ),
-            SizedBox(
-              height: 42,
-            ),
-            Text(
-              "You can easily manage all of your daily \n               tasks in DoMe for free",
-              style: TextStyle(fontSize: 18, color: Colors.white70),
-            )
           ],
         ),
       ),

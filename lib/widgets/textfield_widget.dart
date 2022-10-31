@@ -9,6 +9,8 @@ Widget MyTextField(context, String text, String type) {
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: Colors.white54)),
     child: TextFormField(
+      onSaved: (value){
+      },
         cursorHeight: 28,
         enableIMEPersonalizedLearning: false,
         strutStyle: StrutStyle(fontSize: 22),

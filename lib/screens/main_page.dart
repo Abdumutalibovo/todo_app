@@ -1,238 +1,206 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:numberpicker/numberpicker.dart';
-
 import '../utils/colors.dart';
 import '../utils/images.dart';
-import '../widgets/hour_widget.dart';
-import '../widgets/textfield_widget.dart';
+import '../widgets/add_task_widget.dart';
+import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
-  final String? restorationId;
-
-  const MainPage({Key? key, required this.restorationId}) : super(key: key);
+  MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
-final _formkey = GlobalKey<FormState>();
-
-class _MainPageState extends State<MainPage> with RestorationMixin {
-  @override
-  String? get restorationId => widget.restorationId;
-
-  final RestorableDateTime _selectedDate =
-      RestorableDateTime(DateTime(2022, 10, 28));
-  late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
-      RestorableRouteFuture<DateTime?>(
-    onComplete: _selectDate,
-    onPresent: (NavigatorState navigator, Object? arguments) {
-      return navigator.restorablePush(
-        _datePickerRoute,
-        arguments: _selectedDate.value.millisecondsSinceEpoch,
-      );
-    },
-  );
-
-  static Route<DateTime> _datePickerRoute(
-    BuildContext context,
-    Object? arguments,
-  ) {
-    return DialogRoute<DateTime>(
-      context: context,
-      builder: (BuildContext context) {
-        return DatePickerDialog(
-          restorationId: 'date_picker_dialog',
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
-          firstDate: DateTime(2022),
-          lastDate: DateTime(2023),
-        );
-      },
-    );
-  }
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_selectedDate, 'selected_date');
-    registerForRestoration(
-        _restorableDatePickerRouteFuture, 'date_picker_route_future');
-  }
-
-  void _selectDate(DateTime? newSelectedDate) {
-    if (newSelectedDate != null) {
-      showDialog(
-          context: context,
-          builder: (((context) => AlertDialog(
-                contentPadding: EdgeInsets.only(top: 8, left: 8, right: 8),
-                content: HourWidget(context),
-                backgroundColor: Color(0xFF363636),
-                titlePadding: EdgeInsets.only(left: 110, top: 15),
-                title: Text(
-                  'Choose time',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ))));
-    }
-  }
+class _MainPageState extends State<MainPage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formkey,
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          toolbarHeight: 80,
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset(MyImages.ic_menu),
-          ),
-          backgroundColor: Colors.black,
-          title: Text("HomePage"),
-          actions: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: CircleAvatar(
-                radius: 24,
-                backgroundImage: NetworkImage(
-                  "https://i.pravatar.cc/300",
-                ),
-              ),
-            ),
-            SizedBox(width: 12),
-          ],
-        ),
-        floatingActionButton: InkWell(
-          onTap: () {
+    final List<Widget> _pages = [
+      HomePage(),
+      Container(),
+      Container(),
+      Container(),
+      Container(),
+    ];
+
+    return Scaffold(
+      body: _pages[_selectedIndex],
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
             showModalBottomSheet(
-                isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                context: (context),
+                context: context,
                 builder: (BuildContext context) {
-                  return SingleChildScrollView(
-                    child: Container(
-                      width: double.infinity,
-                      height: 300,
-                      decoration: BoxDecoration(
-                        color: MyColors.C_363636,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15)),
+                  return Container(
+                    padding: EdgeInsets.all(24),
+                    height: 350,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(top: 25, left: 25),
-                            child: Text(
-                              "Add Task",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700),
+                      color: MyColors.C_363636,
+                    ),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(MyImages.ic_fingerprint),
+                        SizedBox(height: 12),
+                        Text(
+                          "Please hold your finger at "
+                              "the fingerprint scanner to verify your identity",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white.withOpacity(0.87),
+                              fontSize: 20),
+                        ),
+                        SizedBox(height: 48),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(150, 48),
+                                backgroundColor: MyColors.C_363636,
+                                shadowColor: null,
+                                elevation: 0,
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    fontSize: 16, color: MyColors.C_8875FF),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: MyTextField(
-                                context, "Do math homework", "Title"),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, top: 16),
-                            child: MyTextField(
-                                context, "Description", "Description"),
-                          ),
-                          SizedBox(
-                            height: 36,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 32,
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(150, 48),
+                                backgroundColor: MyColors.C_363636,
                               ),
-                              SvgPicture.asset(MyImages.ic_hour),
-                              SizedBox(
-                                width: 32,
+                              onPressed: () {},
+                              child: const Text(
+                                "Use Password",
+                                style: TextStyle(fontSize: 16),
                               ),
-                              SvgPicture.asset(MyImages.ic_pin),
-                              SizedBox(
-                                width: 32,
-                              ),
-                              SvgPicture.asset(MyImages.ic_flag),
-                              SizedBox(
-                                width: 160,
-                              ),
-                              OutlinedButton(
-                                  onPressed: () {
-                                    if (_formkey.currentState!.validate()) {
-                                      _restorableDatePickerRouteFuture
-                                          .present();
-                                    }
-                                  },
-                                  child: SvgPicture.asset(MyImages.ic_sent)),
-                            ],
-                          )
-                        ],
-                      ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   );
                 });
           },
-          child: Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.C_8687E7,
-              ),
-              child: Center(
-                child: Text(
-                  "+",
-                  style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white),
-                ),
-              )),
+          icon: SvgPicture.asset(MyImages.ic_menu),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: SizedBox(
-          height: 80,
-          child: BottomNavigationBar(
-            iconSize: 28,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white.withOpacity(0.50),
-            backgroundColor: MyColors.C_363636,
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(MyImages.ic_home),
-                label: 'Index',
+        backgroundColor: Colors.black,
+        title: Text("HomePage"),
+        actions: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: CircleAvatar(
+              radius: 24,
+              backgroundImage: NetworkImage(
+                "https://i.pravatar.cc/300",
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(MyImages.ic_calendar),
-                label: 'Calendar',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(null),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(MyImages.ic_focuse),
-                label: 'Focus',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(MyImages.ic_profile),
-                label: 'Profile',
-              ),
-            ],
+            ),
           ),
+          SizedBox(width: 12),
+        ],
+      ),
+      floatingActionButton: Stack(children: [
+        Positioned(
+          bottom: 34,
+          left: 155.9,
+          child: Container(
+            width: 90,
+            height: 45.5,
+            decoration: BoxDecoration(
+                color: Color(0xff121212),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.elliptical(76, 80),
+                    bottomRight: Radius.elliptical(76, 80))),
+          ),
+        ),
+        Positioned(
+          bottom: 40,
+          left: 165,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) {
+                  return AddTaskWidget(
+                    onNewTask: () {
+                      setState(() {
+                        _selectedIndex = 0;
+                      });
+                    },
+                  );
+                },
+              );
+            },
+            child: Container(
+                height: 72,
+                width: 72,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: MyColors.C_8687E7,
+                ),
+                child: Center(
+                  child: Text(
+                    "+",
+                    style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
+                  ),
+                )),
+          ),
+        ),
+      ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: SizedBox(
+        height: 80,
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          iconSize: 28,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white.withOpacity(0.50),
+          backgroundColor: MyColors.C_363636,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: 'Index',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(null),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.watch_later_outlined),
+              label: 'Focus',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              label: 'Profile',
+            ),
+          ],
         ),
       ),
     );

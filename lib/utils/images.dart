@@ -8,7 +8,6 @@ class MyImages {
   static const im_organazed_task="assets/images/im_orginazed_task.png";
 
 
-
   //icons
   static const ic_menu = "assets/icons/ic_menu.svg";
   static const ic_focuse = "assets/icons/ic_focuse.svg";
@@ -24,4 +23,7 @@ class MyImages {
   static const ic_pin = "assets/icons/ic_pin.svg";
   static const ic_flag = "assets/icons/ic_flag.svg";
   static const ic_sent = "assets/icons/ic_sent.svg";
+  static const ic_fingerprint='assets/icons/ic_birnima.svg';
+  static const ic_pas="assets/icons/ic_pas.svg";
+  static const ic_dum='assets/icons/ic_dum.svg';
 }

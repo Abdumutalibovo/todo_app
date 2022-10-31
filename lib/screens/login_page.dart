@@ -127,9 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                                               Navigator.pushAndRemoveUntil(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (_) => MainPage(
-                                                            restorationId: '',
-                                                          )),
+                                                      builder: (_) => MainPage()),
                                                   (route) => false);
                                             },
                                             child: Text(
