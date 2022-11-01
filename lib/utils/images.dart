@@ -26,4 +26,5 @@ class MyImages {
   static const ic_fingerprint='assets/icons/ic_birnima.svg';
   static const ic_pas="assets/icons/ic_pas.svg";
   static const ic_dum='assets/icons/ic_dum.svg';
+  static const ic_flags='assets/icons/icon.svg';
 }
