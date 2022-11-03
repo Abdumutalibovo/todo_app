@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:todo_app/utils/colors.dart';
 import '../../database/local_database.dart';
 import '../../models/todo_model.dart';
 import '../utils/images.dart';
-
+import 'category_widget.dart';
 class AddTaskWidget extends StatefulWidget {
   VoidCallback onNewTask;
-
   AddTaskWidget({Key? key, required this.onNewTask}) : super(key: key);
 
   @override
@@ -24,11 +22,24 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
   String newDate1 = '';
   String newDate2 = '';
   String newDate3 = '';
-  int _currentIntValue1 = 1;
-  int _currentIntValue2 = 1;
+  DateTime? taskDay; // 02.11.2022 ----
+  TimeOfDay? taskTime; // ---------- 21:25
   List list = [
     'AM',
     'PM'
+  ];
+  List<Widget> lists=[
+    CategoryWidget(Color(0xFFCCFF80), MyImages.ic_grocery,'Grocery'),
+    CategoryWidget(Color(0xFFFF9680), MyImages.ic_work,'Work'),
+    CategoryWidget(Color(0xFF80FFFF), MyImages.ic_sport,'Sport'),
+    CategoryWidget(Color(0xFF80FFD9), MyImages.ic_design,'Design'),
+    CategoryWidget(Color(0xFF809CFF), MyImages.ic_university,'University'),
+    CategoryWidget(Color(0xFFFF80EB), MyImages.ic_social,'Social'),
+    CategoryWidget(Color(0xFFFC80FF), MyImages.ic_music,'Music'),
+    CategoryWidget(Color(0xFF80FFA3), MyImages.ic_healty,'Health'),
+    CategoryWidget(Color(0xFF80D1FF), MyImages.ic_movie,'Movie'),
+    CategoryWidget(Color(0xFFFF8080), MyImages.icc_home,'Home'),
+    CategoryWidget(Color(0xFF80FFD1), MyImages.ic_create,'Create New'),
   ];
 
   @override
@@ -38,7 +49,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
         key: formKey,
         child: Container(
           width: double.infinity,
-          height: 600,
+          height: 500,
           decoration: BoxDecoration(
             color: MyColors.C_363636,
             borderRadius: BorderRadius.only(
@@ -101,19 +112,105 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               Row(
                 children: [
                   SizedBox(
-                    width: 32,
+                    width: 16,
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      taskDay = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2300),
+                      );
+                      taskTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      taskDay = DateTime(
+                        taskDay!.year,
+                        taskDay!.month,
+                        taskDay!.day,
+                        taskTime!.hour,
+                        taskTime!.minute,
+                      );
+                    },
+                    icon: Icon(
+                      Icons.calendar_month,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 24,
                   ),
                   InkWell(
                       onTap: (){
-                        setState(() {
-                          onClock=!onClock;
-                        });
+                        showDialog(context: context, builder: (((context)=>AlertDialog(
+                          contentPadding:EdgeInsets.only(top: 8,left: 8,right: 8),
+                          title:  Center(child: Text('Choose Category',style: TextStyle(color: Colors.white),)),
+                          backgroundColor: MyColors.C_363636,
+                          content: Container(
+                            height: MediaQuery.of(context).size.height*0.6,
+                            width: MediaQuery.of(context).size.height*0.95,
+                            color: MyColors.C_363636,
+                            child: Column(
+                              children: [
+                                Divider(thickness: 0.7,color: Colors.white70,),
+                                SizedBox(height: 5,),
+                                Container(
+                                  height: MediaQuery.of(context).size.height*0.5,
+                                  width: MediaQuery.of(context).size.height*0.9,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                                    itemCount: 11,
+                                    itemBuilder: ((context,index){
+                                      return Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: InkWell(
+                                          onTap: (){
+                                            setState(() {
+                                              newprority = index.toString();
+                                            });
+                                          },
+                                          child: lists[index],
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 45),
+                                      child: InkWell(
+                                          onTap: (() {
+                                            Navigator.pop(context);
+                                          }),
+                                          child: Text('Cancel', style: TextStyle(color: Colors.white,),)),
+                                    ),
+                                    InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            Navigator.pop(context);
+                                            newprority = newprority;
+                                          });
+                                        },
+                                        child: Container(
+                                        height: 50,
+                                        width: 120,
+                                        color: MyColors.C_8687E7,
+                                        child: Container(
+                                            child: Center(child: Text('Save', style: TextStyle(color: Colors.white),)))))
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))));
                       },
-                      child: SvgPicture.asset(MyImages.ic_hour)),
-                  SizedBox(
-                    width: 32,
-                  ),
-                  SvgPicture.asset(MyImages.ic_pin),
+                      child: SvgPicture.asset(MyImages.ic_pin)),
                   SizedBox(
                     width: 32,
                   ),
@@ -211,7 +308,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         var newTodo = TodoModel(
                           title: newTitle,
                           description: newDescription,
-                          date: newDate3,
+                          date: taskDay.toString(),
                           priority: newprority,
                           isCompleted: 0,
                         );
@@ -223,115 +320,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 ],
               ),
               SizedBox(height: 24,),
-              onClock?Container(
-                height: MediaQuery.of(context).size.height*0.25,
-                width: MediaQuery.of(context).size.height*0.9,
-                color: Color(0xFF363636),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 40),
-                      child: Divider(thickness: 0.7,color: Colors.white70,),
-                    ),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 55),
-                      child: Row(children: [
-                        Container(
-                          width: 70,
-                          color: Color(0xFF272727),
-                          child: NumberPicker(
-                            value: _currentIntValue2,
-                            itemHeight: 25,
-                            itemWidth: 80,
-                            selectedTextStyle:TextStyle(color: Colors.white,fontSize: 25,
-                              fontWeight: FontWeight.w800,),
-                            textStyle: TextStyle(color: Colors.white12,fontSize: 20),
-                            minValue: 0,
-                            maxValue: 23,
-                            step: 1,
-                            haptics: true,
-                            onChanged: (value) => setState(() {
-                              _currentIntValue2 = value;
-                              newDate1 = value.toString();
-                            } ),
-                          ),
-                        ),
-                        SizedBox(width: 16,),
-                        Container(child: Text(':',style: TextStyle(fontSize: 30, color:
-                        Colors.white),),),
-                        SizedBox(width: 16,),
-                        Container(
-                          width: 70,
-                          color: Color(0xFF272727),
-                          child: NumberPicker(
-                            value: _currentIntValue1,
-                            itemHeight: 25,
-                            itemWidth: 80,
-                            selectedTextStyle:TextStyle(color: Colors.white,fontSize: 25,
-                              fontWeight: FontWeight.w800,),
-                            textStyle: TextStyle(color: Colors.white12,fontSize: 20),
-                            minValue: 0,
-                            maxValue: 59,
-                            step: 1,
-                            haptics: true,
-                            onChanged: (value) => setState(() {
-                              _currentIntValue1 = value;
-                              newDate2 = value.toString();
-                            } ),
-                          ),
-                        ),
-                        SizedBox(width: 20,),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 20,horizontal: 12),
-                          width: 70,
-                          height: 75,
-                          color: Color(0xFF272727),
-                          child: ListView.separated(
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int count){
-                              return Container(
-                                child: Text(list[count], style: TextStyle(fontSize: 30,color: Colors.white),),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(height: 0.2,);
-                            },
-                          ),
-                        ),
-                      ],),
-                    ),
-                    SizedBox(height: 32,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 65),
-                          child: InkWell(
-                              onTap: (() {
-                               setState(() {
-                                 onClock=!onClock;
-                               });
-                              }),
-                              child: Text('Cancel', style: TextStyle(color: MyColors.C_8687E7,),)),
-                        ),
-                        InkWell(
-                            onTap: (){
-                              newDate3 = '$newDate1 : $newDate2';
-                            }, child: Padding(
-                          padding: const EdgeInsets.only(right: 40),
-                          child: Container(
-                              height: 50,
-                              width: 120,
-                              color: MyColors.C_8687E7,
-                              child: Container(
-                                  child: Center(child: Text('Save', style: TextStyle(color: Colors.white),)))),
-                        ))
-                      ],
-                    ),
-                  ],
-                ),
-              ):Container(),
             ],
           ),
         ),

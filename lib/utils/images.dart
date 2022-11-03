@@ -27,4 +27,15 @@ class MyImages {
   static const ic_pas="assets/icons/ic_pas.svg";
   static const ic_dum='assets/icons/ic_dum.svg';
   static const ic_flags='assets/icons/icon.svg';
+  static const ic_grocery='assets/icons/ic_grocery.svg';
+  static const ic_work='assets/icons/ic_work.svg';
+  static const ic_sport='assets/icons/ic_sport.svg';
+  static const ic_design='assets/icons/ic_design.svg';
+  static const ic_university='assets/icons/ic_university.svg';
+  static const ic_social='assets/icons/ic_social.svg';
+  static const ic_music='assets/icons/ic_music.svg';
+  static const ic_healty='assets/icons/ic_healty.svg';
+  static const ic_movie='assets/icons/ic_movie.svg';
+  static const icc_home='assets/icons/icc_home.svg';
+  static const ic_create='assets/icons/ic_create.svg';
 }
