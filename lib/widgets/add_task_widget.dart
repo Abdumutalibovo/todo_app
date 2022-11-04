@@ -1,12 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/utils/colors.dart';
 import '../../database/local_database.dart';
 import '../../models/todo_model.dart';
+import '../models/category_model.dart';
 import '../utils/images.dart';
 import 'category_widget.dart';
+
 class AddTaskWidget extends StatefulWidget {
   VoidCallback onNewTask;
+
   AddTaskWidget({Key? key, required this.onNewTask}) : super(key: key);
 
   @override
@@ -16,31 +20,15 @@ class AddTaskWidget extends StatefulWidget {
 class _AddTaskWidgetState extends State<AddTaskWidget> {
   final formKey = GlobalKey<FormState>();
   String newTitle = "";
+  bool isOn = false;
   String newDescription = "";
   String newprority = '';
-  bool onClock=false;
-  String newDate1 = '';
-  String newDate2 = '';
-  String newDate3 = '';
+  int newCategoryId = -1;
+  int isSelected = -1;
+  bool onClock = false;
   DateTime? taskDay; // 02.11.2022 ----
   TimeOfDay? taskTime; // ---------- 21:25
-  List list = [
-    'AM',
-    'PM'
-  ];
-  List<Widget> lists=[
-    CategoryWidget(Color(0xFFCCFF80), MyImages.ic_grocery,'Grocery'),
-    CategoryWidget(Color(0xFFFF9680), MyImages.ic_work,'Work'),
-    CategoryWidget(Color(0xFF80FFFF), MyImages.ic_sport,'Sport'),
-    CategoryWidget(Color(0xFF80FFD9), MyImages.ic_design,'Design'),
-    CategoryWidget(Color(0xFF809CFF), MyImages.ic_university,'University'),
-    CategoryWidget(Color(0xFFFF80EB), MyImages.ic_social,'Social'),
-    CategoryWidget(Color(0xFFFC80FF), MyImages.ic_music,'Music'),
-    CategoryWidget(Color(0xFF80FFA3), MyImages.ic_healty,'Health'),
-    CategoryWidget(Color(0xFF80D1FF), MyImages.ic_movie,'Movie'),
-    CategoryWidget(Color(0xFFFF8080), MyImages.icc_home,'Home'),
-    CategoryWidget(Color(0xFF80FFD1), MyImages.ic_create,'Create New'),
-  ];
+  List list = ['AM', 'PM'];
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +41,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
           decoration: BoxDecoration(
             color: MyColors.C_363636,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15)),
+                topLeft: Radius.circular(15), topRight: Radius.circular(15)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +60,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 height: 8,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16,right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16),
                 child: TextFormField(
                   onSaved: (val) {
                     newTitle = val ?? "";
@@ -91,7 +78,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               ),
               SizedBox(height: 12),
               Padding(
-                padding: const EdgeInsets.only(left: 16,right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16),
                 child: TextFormField(
                   onSaved: (val) {
                     newDescription = val ?? "";
@@ -143,278 +130,250 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     width: 24,
                   ),
                   InkWell(
-                      onTap: (){
-                        showDialog(context: context, builder: (((context)=>AlertDialog(
-                          contentPadding:EdgeInsets.only(top: 8,left: 8,right: 8),
-                          title:  Center(child: Text('Choose Category',style: TextStyle(color: Colors.white),)),
-                          backgroundColor: MyColors.C_363636,
-                          content: Container(
-                            height: MediaQuery.of(context).size.height*0.6,
-                            width: MediaQuery.of(context).size.height*0.95,
-                            color: MyColors.C_363636,
-                            child: Column(
-                              children: [
-                                Divider(thickness: 0.7,color: Colors.white70,),
-                                SizedBox(height: 5,),
-                                Container(
-                                  height: MediaQuery.of(context).size.height*0.5,
-                                  width: MediaQuery.of(context).size.height*0.9,
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-                                    itemCount: 11,
-                                    itemBuilder: ((context,index){
-                                      return Padding(
-                                        padding: EdgeInsets.all(8),
-                                        child: InkWell(
-                                          onTap: (){
-                                            setState(() {
-                                              newprority = index.toString();
-                                            });
-                                          },
-                                          child: lists[index],
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (((context) => AlertDialog(
+                                  contentPadding: EdgeInsets.only(
+                                      top: 8, left: 8, right: 8),
+                                  title: Center(
+                                      child: Text(
+                                    'Choose Category',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                                  backgroundColor: MyColors.C_363636,
+                                  content: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
+                                    width: MediaQuery.of(context).size.height *
+                                        0.95,
+                                    color: MyColors.C_363636,
+                                    child: Column(
+                                      children: [
+                                        Divider(
+                                          thickness: 0.7,
+                                          color: Colors.white70,
                                         ),
-                                      );
-                                    }),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 45),
-                                      child: InkWell(
-                                          onTap: (() {
-                                            Navigator.pop(context);
-                                          }),
-                                          child: Text('Cancel', style: TextStyle(color: Colors.white,),)),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.9,
+                                          child: GridView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3),
+                                            itemCount: 11,
+                                            itemBuilder: ((context, index) {
+                                              return Padding(
+                                                padding: EdgeInsets.all(8),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      newCategoryId = index;
+
+                                                    });
+                                                  },
+                                                  child: CategoryWidget(CategoryModel.lists[index], index),
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 45),
+                                              child: InkWell(
+                                                  onTap: (() {
+                                                    Navigator.pop(context);
+                                                  }),
+                                                  child: Text(
+                                                    'Cancel',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  )),
+                                            ),
+                                            InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    Navigator.pop(context);
+                                                    newCategoryId=newCategoryId;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    height: 50,
+                                                    width: 120,
+                                                    color: MyColors.C_8687E7,
+                                                    child: Container(
+                                                        child: Center(
+                                                            child: Text(
+                                                      'Save',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )))))
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    InkWell(
-                                        onTap: (){
-                                          setState(() {
-                                            Navigator.pop(context);
-                                            newprority = newprority;
-                                          });
-                                        },
-                                        child: Container(
-                                        height: 50,
-                                        width: 120,
-                                        color: MyColors.C_8687E7,
-                                        child: Container(
-                                            child: Center(child: Text('Save', style: TextStyle(color: Colors.white),)))))
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ))));
+                                  ),
+                                ))));
                       },
                       child: SvgPicture.asset(MyImages.ic_pin)),
                   SizedBox(
                     width: 32,
                   ),
                   InkWell(
-                      onTap: (){
-                        showDialog(context: context, builder: (((context)=>AlertDialog(
-                          contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8),
-                          title: Center(child: Text('Task Priority',style: TextStyle(color: Colors.white),)),
-                          backgroundColor: MyColors.C_363636,
-                          content: Container(
-                            height: MediaQuery.of(context).size.height*0.42,
-                            width: MediaQuery.of(context).size.height*0.9,
-                            color: MyColors.C_363636,
-                            child: Column(
-                              children: [
-                                Divider(thickness: 0.7,color: Colors.white70,),
-                                SizedBox(height: 5,),
-                                Container(
-                                  height: MediaQuery.of(context).size.height*0.32,
-                                  width: MediaQuery.of(context).size.height*0.9,
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-                                    itemCount: 10,
-                                    itemBuilder: ((context,index){
-                                      return Padding(
-                                          padding: EdgeInsets.all(8),
-                                        child: InkWell(
-                                          onTap: (){
-                                            setState(() {
-                                              newprority = index.toString();
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 50,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                                color: Color(0xFF272727),
-                                              borderRadius: BorderRadius.circular(6)
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height: 5,),
-                                                Container(
-                                                  child: SvgPicture.asset(MyImages.ic_flags, width: 26,),),
-                                                SizedBox(height: 3,),
-                                                Container(child: Text(index.toString(),style: TextStyle(fontSize: 22, color:
-                                                Colors.white),),)
-                                              ],
+                      onTap: () {
+                        showDialog(context: context, builder: (((context)=>StatefulBuilder(builder: (context,state){
+                          return AlertDialog(
+                            contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8),
+                            title: Center(child: Text('Task Priority',style: TextStyle(color: Colors.white),)),
+                            backgroundColor: MyColors.C_363636,
+                            content: Container(
+                              height: MediaQuery.of(context).size.height*0.42,
+                              width: MediaQuery.of(context).size.height*0.9,
+                              color: MyColors.C_363636,
+                              child: Column(
+                                children: [
+                                  Divider(thickness: 0.7,color: Colors.white70,),
+                                  SizedBox(height: 5,),
+                                  Container(
+                                    height: MediaQuery.of(context).size.height*0.32,
+                                    width: MediaQuery.of(context).size.height*0.9,
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+                                      itemCount: 10,
+                                      itemBuilder: ((context,index){
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            onTap: (){
+                                              state(() {
+                                                isSelected = index;
+                                                newprority = (index+1).toString();
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 50,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  color: isSelected == index ? MyColors.C_8687E7 : Color(0xFF272727),
+                                                  borderRadius: BorderRadius.circular(6),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: 5,),
+                                                  Container(
+                                                    child: SvgPicture.asset(MyImages.ic_flags, width: 26,),),
+                                                  SizedBox(height: 3,),
+                                                  Container(
+                                                    child: Text((index+1).toString(),style: TextStyle(fontSize: 22, color:
+                                                    Colors.white),),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 45),
-                                      child: InkWell(
-                                          onTap: (() {
-                                            Navigator.pop(context);
-                                          }),
-                                          child: Text('Cancel', style: TextStyle(color: Colors.white,),)),
+                                        );
+                                      }),
                                     ),
-                                    InkWell(
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 45),
+                                        child: InkWell(
+                                            onTap: (() {
+                                              Navigator.pop(context);
+                                            }),
+                                            child: Text('Cancel', style: TextStyle(color: Colors.white,),)),
+                                      ),
+                                      InkWell(
                                         onTap: (){
-                                          setState(() {
+                                          state(() {
                                             Navigator.pop(context);
                                             newprority = newprority;
-                                          });
-                                        }, child: Container(
-                                        height: 50,
-                                        width: 120,
-                                        color: MyColors.C_8687E7,
+                                          });},
                                         child: Container(
-                                            child: Center(child: Text('Save', style: TextStyle(color: Colors.white),)))))
-                                  ],
-                                ),
-                              ],
+                                          height: 50,
+                                          width: 120,
+                                          color: MyColors.C_8687E7,
+                                          child: Container(
+                                              child: Center(child: Text('Save', style: TextStyle(color: Colors.white,),))),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ))));
+                          );
+                        }))));
                       },
                       child: SvgPicture.asset(MyImages.ic_flags)),
                   SizedBox(
                     width: 160,
                   ),
                   InkWell(
-                      onTap: (){
+                      onTap: () {
                         formKey.currentState?.save();
-                        var newTodo = TodoModel(
+                        if(newTitle.isNotEmpty &&
+                            newDescription.isNotEmpty &&
+                            taskDay != null &&
+                            newCategoryId != -1){var newTodo = TodoModel(
                           title: newTitle,
                           description: newDescription,
                           date: taskDay.toString(),
                           priority: newprority,
+                          categoryId: newCategoryId,
                           isCompleted: 0,
                         );
                         LocalDatabase.insertToDatabase(newTodo);
                         widget.onNewTask();
                         Navigator.pop(context);
-                      },
+                      }else{
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Qayerdadur xatolik mavjud!", style: TextStyle(fontSize: 20),),
+                              content: Text("\nHamasn toldirishingiz kerak"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Tushinarli"),
+                                )
+                              ],
+                            ),
+                          );
+                        }},
                       child: SvgPicture.asset(MyImages.ic_sent)),
                 ],
               ),
-              SizedBox(height: 24,),
+              SizedBox(
+                height: 24,
+              ),
             ],
           ),
         ),
-      ),
-    );
-  }
-  Widget FlagWidget(newprority){
-    return  InkWell(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (((context) => AlertDialog(
-              contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8),
-              content:Container(
-                height: MediaQuery.of(context).size.height*0.42,
-                width: MediaQuery.of(context).size.height*0.9,
-                color: Color(0xFF363636),
-                child: Column(
-                  children: [
-                    Divider(thickness: 0.7,color: Colors.white70,),
-                    SizedBox(height: 5,),
-                    Container(
-                      height: MediaQuery.of(context).size.height*0.32,
-                      width: MediaQuery.of(context).size.height*0.9,
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-                        itemCount: 10,
-                        itemBuilder: ((context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: (){
-                                setState(() {
-                                  newprority = '2';
-                                });
-                              },
-                              child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Color(0xFF272727),
-                                  child: Column(children: [
-                                    SizedBox(height: 5,),
-                                    Container(
-                                      child: SvgPicture.asset(MyImages.ic_flags, width: 26,),),
-                                    SizedBox(height: 3,),
-                                    Container(child: Text(index.toString(),style: TextStyle(fontSize: 22, color:
-                                    Colors.white),),)
-                                  ],)
-                              ),
-                            ),
-                          );
-                        }),
-
-                      ),
-                    ),
-                    // SizedBox(height: 32,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 45),
-                          child: InkWell(
-                              onTap: (() {
-                                Navigator.pop(context);
-                              }),
-                              child: Text('Cancel', style: TextStyle(color: MyColors.C_4C4C7C,),)),
-                        ),
-                        InkWell(
-                            onTap: (){
-                              setState(() {
-                                Navigator.of(context);
-                                newprority = newprority;
-                              });
-                            }, child: Container(
-                            height: 50,
-                            width: 120,
-                            color: MyColors.C_8687E7,
-                            child: Container(
-                                child: Center(child: Text('Save', style: TextStyle(color: Colors.white),)))))
-                      ],
-                    ),
-                  ],
-                ),),
-              backgroundColor: Color(0xFF363636),
-              titlePadding: EdgeInsets.only(left: 110,top: 15),
-              title: Text('Task Priority',style: TextStyle(color: Colors.white),),
-            ))));
-
-      },
-      child: Container(
-        padding: EdgeInsets.only(left: 25),
-        child: SvgPicture.asset(MyImages.ic_flags),
       ),
     );
   }

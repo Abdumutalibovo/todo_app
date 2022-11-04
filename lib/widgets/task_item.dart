@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/utils/images.dart';
 import '../../models/todo_model.dart';
 import '../database/local_database.dart';
+import '../models/category_model.dart';
 import '../utils/colors.dart';
 
 class TaskItem extends StatelessWidget {
@@ -28,31 +29,17 @@ class TaskItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: MyColors.C_363636,
         ),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   model?.id.toString() ?? "-1",
                   style: TextStyle(color: Colors.white,),
                 ),
-                SizedBox(height: 8),
-                Text(
-                  model?.title.toString() ?? "No title",
-                  style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  model?.date.toString() ?? "No data",
-                  style: TextStyle(color: Colors.grey,fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-            Column(
-              children: [
                 IconButton(
                     onPressed: () {
                       showDialog(
@@ -89,22 +76,65 @@ class TaskItem extends StatelessWidget {
                       color: Colors.red,
                       size: 28,
                     )),
-                SizedBox(width: 5,),
-                Container(
-                  width: 42,
-                  height: 29,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    color: MyColors.C_363636,
-                    border: Border.all(color: Color(0xFF809CFF)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(child: SvgPicture.asset(MyImages.ic_flags)),
-                      SizedBox(width: 5,),
-                      Text(model?.priority.toString()??'0', style: TextStyle(color: Colors.white, fontSize:17 ),),
-                    ],
-                  ),
+              ],
+            ),
+            Container(
+              child: Text(
+                CategoryModel.lists[(model!.categoryId)].name.toString(),
+                style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.w700),
+              ),
+            ),
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  model?.date.toString() ?? "No data",
+                  style: TextStyle(color: Colors.grey,fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+                Row(
+                  children: [
+                    Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Color(CategoryModel.lists[model!.categoryId].color),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset(CategoryModel.lists[model!.categoryId].icon??""),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  CategoryModel.lists[(model!.categoryId)].name.toString(),
+                                  style: TextStyle(color: Colors.white,fontSize: 14,),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                    SizedBox(width: 12,),
+                    Container(
+                      width: 42,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: MyColors.C_363636,
+                        border: Border.all(color: Color(0xFF809CFF)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(child: SvgPicture.asset(MyImages.ic_flags)),
+                          // SizedBox(width: 3,),
+                          Text(model?.priority.toString()??'0', style: TextStyle(color: Colors.white, fontSize:17 ),),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

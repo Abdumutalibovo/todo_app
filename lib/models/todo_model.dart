@@ -5,6 +5,7 @@ class TodoFields {
   static String date = "date";
   static String priority = "priority";
   static String isCompleted = "isCompleted";
+  static String categoryId = "categoryId";
 }
 
 class TodoModel {
@@ -13,6 +14,7 @@ class TodoModel {
   final String description;
   final String date;
   final String priority;
+  final int categoryId;
   final int isCompleted;
 
   TodoModel({
@@ -22,6 +24,7 @@ class TodoModel {
     required this.date,
     required this.priority,
     required this.isCompleted,
+    required this.categoryId,
   });
 
   factory TodoModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +35,7 @@ class TodoModel {
       date: json['date'] ?? '',
       priority: json['priority'] ?? '',
       isCompleted: json['isCompleted'] ?? -1,
+      categoryId: json['categoryId'] ?? -1,
     );
   }
 
@@ -42,6 +46,7 @@ class TodoModel {
       'date': date,
       'priority': priority,
       'isCompleted': isCompleted,
+      'categoryId' : categoryId,
     };
   }
 
@@ -54,11 +59,12 @@ class TodoModel {
     int? isCompleted,
   }) =>
       TodoModel(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        date: date ?? this.date,
-        priority: priority ?? this.priority,
-        isCompleted: isCompleted ?? this.isCompleted,
+          id: id ?? this.id,
+          title: title ?? this.title,
+          description: description ?? this.description,
+          date: date ?? this.date,
+          priority: priority ?? this.priority,
+          isCompleted: isCompleted ?? this.isCompleted,
+          categoryId: categoryId,
       );
 }

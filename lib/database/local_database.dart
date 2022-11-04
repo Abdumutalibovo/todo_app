@@ -28,7 +28,7 @@ class LocalDatabase {
       onCreate: (Database db, int version) async {
         String idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
         String textType = "TEXT";
-        String boolType = "INTEGER";
+        String intType = "INTEGER";
 
         await db.execute('''
         CREATE TABLE $tableName (
@@ -37,7 +37,8 @@ class LocalDatabase {
             ${TodoFields.description} $textType, 
             ${TodoFields.date} $textType,
             ${TodoFields.priority} $textType,
-            ${TodoFields.isCompleted} $boolType
+            ${TodoFields.categoryId} $intType,
+            ${TodoFields.isCompleted} $intType
             )
             ''');
       },
@@ -70,8 +71,9 @@ class LocalDatabase {
       TodoFields.id,
       TodoFields.title,
       TodoFields.description,
-      TodoFields.priority,
       TodoFields.date,
+      TodoFields.priority,
+      TodoFields.categoryId,
     ]);
 
     var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
@@ -95,7 +97,9 @@ class LocalDatabase {
         TodoFields.id,
         TodoFields.title,
         TodoFields.description,
-        TodoFields.date
+        TodoFields.date,
+        TodoFields.priority,
+        TodoFields.categoryId,
       ]);
 
       var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
@@ -111,6 +115,4 @@ class LocalDatabase {
       whereArgs: [id],
     );
   }
-
-
 }

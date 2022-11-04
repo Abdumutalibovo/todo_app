@@ -25,7 +25,9 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
   String newTitle = "";
   String newDescription = "";
   DateTime? taskDate;
-  String newprority = '';
+  String newpriorty='';
+  int newCategory = -1;
+  int newCategoryColor = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +176,7 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                                         child: InkWell(
                                           onTap: (){
                                             setState(() {
-                                              newprority = index.toString();
+                                              newpriorty = index.toString();
                                             });
                                           },
                                           child: Container(
@@ -215,7 +217,7 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                                         onTap: (){
                                           setState(() {
                                             Navigator.pop(context);
-                                            newprority = newprority;
+                                            newpriorty = newpriorty;
                                           });
                                         }, child: Container(
                                         height: 50,
@@ -242,7 +244,8 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                         title: newTitle,
                         description: newDescription,
                         date: taskDate.toString(),
-                        priority: newprority,
+                        priority: newpriorty,
+                        categoryId: newCategory,
                         isCompleted: 0,
                       );
                       LocalDatabase.updateTaskById(newTodo);

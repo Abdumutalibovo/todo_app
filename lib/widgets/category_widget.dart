@@ -2,8 +2,10 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:todo_app/models/category_model.dart';
 
-Widget CategoryWidget(Color color, String image, String name){
+
+Widget CategoryWidget(CategoryModel category, int index){
   return Container(
     child: Column(
       children: [
@@ -11,17 +13,17 @@ Widget CategoryWidget(Color color, String image, String name){
           width: 64,
           height: 64,
           decoration: BoxDecoration(
-            color: color,
+            color: Color(category.color),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Container(
-                child: SvgPicture.asset(image)),
+                child: SvgPicture.asset(category.icon ?? "")),
           ),
         ),
         SizedBox(height: 3,),
-        Text(name, style: TextStyle(color: Colors.white,),),
+        Text(category.name ?? "", style: TextStyle(color: Colors.white,),),
       ],
     ),
   );
