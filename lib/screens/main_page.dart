@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:todo_app/screens/profile2_page.dart';
+import 'package:todo_app/screens/profile_page.dart';
 import '../utils/colors.dart';
 import '../utils/images.dart';
 import '../widgets/add_task_widget.dart';
@@ -22,10 +24,11 @@ class _MainPageState extends State<MainPage> {
       Container(),
       Container(),
       Container(),
-      Container(),
+      ProfilePage(),
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _pages[_selectedIndex],
       backgroundColor: Colors.black,
       appBar: AppBar(

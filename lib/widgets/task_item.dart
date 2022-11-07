@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/utils/images.dart';
+import 'package:todo_app/utils/time_utils.dart';
 import '../../models/todo_model.dart';
 import '../database/local_database.dart';
 import '../models/category_model.dart';
@@ -10,12 +11,14 @@ class TaskItem extends StatelessWidget {
   TodoModel? model;
   final VoidCallback onDeleted;
   final VoidCallback onSelected;
-
+  final ValueChanged<TodoModel> onCompleted;
+  DateTime? taskDate;
   TaskItem({
     Key? key,
     required this.model,
     required this.onDeleted,
     required this.onSelected,
+    required this.onCompleted,
   }) : super(key: key);
 
   @override
@@ -36,9 +39,32 @@ class TaskItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  model?.id.toString() ?? "-1",
-                  style: TextStyle(color: Colors.white,),
+                InkWell(
+                  onTap: (){
+                    onCompleted(model!);
+                  },
+                  child: Container(
+                    width: 16,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: model!.isCompleted==1?Colors.green:Colors.transparent,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
+                        )
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20,),
+                Padding(
+                  padding: const EdgeInsets.only(right: 174),
+                  child: Container(
+                    child: Text(
+                      model!.title,
+                      style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.w700),
+                    ),
+                  ),
                 ),
                 IconButton(
                     onPressed: () {
@@ -77,12 +103,6 @@ class TaskItem extends StatelessWidget {
                       size: 28,
                     )),
               ],
-            ),
-            Container(
-              child: Text(
-                CategoryModel.lists[(model!.categoryId)].name.toString(),
-                style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.w700),
-              ),
             ),
             SizedBox(height: 8),
             Row(
@@ -143,4 +163,7 @@ class TaskItem extends StatelessWidget {
       ),
     );
   }
+  Widget todayTodos(){
+    return ExpansionTile(title: Text('Today', style: TextStyle(color: Colors.white,),));
+}
 }
