@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/utils/colors.dart';
-import 'package:todo_app/utils/images.dart';
 import '../database/local_database.dart';
 import '../models/todo_model.dart';
+import '../theme_provider.dart';
 import '../widgets/task_item.dart';
 import '../widgets/update_task_widget.dart';
 
@@ -17,45 +18,48 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String search='';
   int countOfCompleted=0;
-  int countOfUnCompleted=0;
+  int countOfUncompleted=0;
   @override
+
+
   Widget build(BuildContext context) {
+    var isLight=context.watch<ThemeProvider>().getIsLight();
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isLight? Colors.white:Colors.black,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            searchTodoes(),
+            searchTodoes(isLight),
             Padding(
               padding: const EdgeInsets.only(left: 10,right: 10),
-              child: UncomplatedTodos(),
+              child: todayTodos(isLight),
             ),
             const SizedBox(
               height: 20,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10,right: 10),
-              child: CompletedTodos(),
+              child: completedTodos(isLight),
             ),
-            SizedBox(height: 24,),
+            const SizedBox(height: 24,),
           ],
         ),
       ),
     );
   }
 
-  Widget searchTodoes(){
+  Widget searchTodoes(isLight){
     return  Padding(
-      padding:  EdgeInsets.only(left: 24, right: 24),
+      padding:  const EdgeInsets.only(left: 24, right: 24),
       child: TextField(
         onChanged: (val){
           setState(() {
             search=val;
           });
         },
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
+        style: const TextStyle(color: Colors.white),
+        decoration: const InputDecoration(
           hintText: "Search for your task...",
           prefixIcon: Icon(
             Icons.search,
@@ -82,48 +86,59 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget UncomplatedTodos(){
-    return  ExpansionTile(
-      title: Text('Uncomplated ($countOfUnCompleted)', style: TextStyle(color: Colors.white),),
+  Widget todayTodos(isLight) {
+    return ExpansionTile(
+      iconColor: isLight?Colors.black:Colors.white,
+      title: Text(
+        'Uncompleted'.tr(),
+        style: TextStyle(color: isLight?Colors.black:Colors.white,),
+      ),
       children: [
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: FutureBuilder(
-            future: LocalDatabase.getTodosIsCompeted(0),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<TodoModel>> snapshot) {
+            future: LocalDatabase.getTodosIsCompeted(0, title: search),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<TodoModel>> snapshot) {
               if (snapshot.hasData) {
-                countOfUnCompleted=snapshot.data!.length;
+                countOfUncompleted = snapshot.data!.length;
                 if (snapshot.data!.isEmpty) {
-                  return Center(
-                    child: SvgPicture.asset(MyImages.ic_fingerprint),
-                  );
+                  return const Center(
+                      child: Icon(
+                        Icons.file_copy_outlined,
+                        color: Colors.white,
+                        size: 96,
+                      ));
                 }
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.data?.length ?? 0,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     return TaskItem(
-                      model: snapshot.data?[index],
-                      onSelected: () {
-                        showModalBottomSheet(
-                            backgroundColor: MyColors.C_363636,
-                            context: context,
-                            builder: (context) {
-                              return UpdateTaskWidget(
-                                todo: snapshot.data![index],
-                                onUpdatedTask: () {
-                                  setState(() {});
-                                },
-                              );
-                            });
-                      },
-                      onCompleted: (todo){
+                      onCompleted: (todo) {
                         setState(() {
-                          LocalDatabase.getTodosIsCompeted(0,title: search);
+                          LocalDatabase.updateTaskById(
+                            todo.copyWith(isCompleted: 1),
+                          );
                         });
                       },
+                      model: snapshot.data![index],
                       onDeleted: () {
                         setState(() {});
+                      },
+                      onSelected: () {
+                        showModalBottomSheet(
+                          backgroundColor: MyColors.C_363636,
+                          context: context,
+                          builder: (context) {
+                            return UpdateTaskWidget(
+                              todo: snapshot.data![index],
+                              onUpdatedTask: () {
+                                setState(() {});
+                              },
+                            );
+                          },
+                        );
                       },
                     );
                   },
@@ -133,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(snapshot.error.toString()),
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ),
@@ -141,59 +156,67 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget CompletedTodos(){
-    return  ExpansionTile(
-      title: Text('Completed ($countOfCompleted)', style: TextStyle(color: Colors.white),),
+  Widget completedTodos(isLight) {
+    return ExpansionTile(
+      iconColor: isLight?Colors.black:Colors.white,
+      title: Text(
+        'Completed'.tr(),
+        style: TextStyle(color: isLight?Colors.black:Colors.white,),
+      ),
       children: [
         FutureBuilder(
-          future: LocalDatabase.getTodosIsCompeted(1),
+          future: LocalDatabase.getTodosIsCompeted(1, title: search),
           builder:
               (BuildContext context, AsyncSnapshot<List<TodoModel>> snapshot) {
             if (snapshot.hasData) {
-              countOfCompleted=snapshot.data!.length;
+              countOfCompleted = snapshot.data!.length;
               if (snapshot.data!.isEmpty) {
-                return Center(
-                  child: SvgPicture.asset(MyImages.ic_fingerprint),
-                );
+                return const Center(
+                    child: Icon(
+                      Icons.file_copy_outlined,
+                      color: Colors.white,
+                      size: 96,
+                    ));
               }
-              return Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return TaskItem(
-                      onCompleted: (todo){
-                        setState(() {
-                          LocalDatabase.getTodosIsCompeted(1,title: search);
-                        });
-                      },
-                      model: snapshot.data?[index],
-                      onSelected: () {
-                        showModalBottomSheet(
-                            backgroundColor: MyColors.C_363636,
-                            context: context,
-                            builder: (context) {
-                              return UpdateTaskWidget(
-                                todo: snapshot.data![index],
-                                onUpdatedTask: () {
-                                  setState(() {});
-                                },
-                              );
-                            });
-                      },
-                      onDeleted: () {
-                        setState(() {});
-                      },
-                    );
-                  },
-                ),
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return TaskItem(
+                    model: snapshot.data![index],
+                    onCompleted: (todo) {
+                      setState(() {
+                        LocalDatabase.updateTaskById(
+                          todo.copyWith(isCompleted: 0),
+                        );
+                      });
+                    },
+                    onDeleted: () {
+                      setState(() {});
+                    },
+                    onSelected: () {
+                      showModalBottomSheet(
+                        backgroundColor: MyColors.C_363636,
+                        context: context,
+                        builder: (context) {
+                          return UpdateTaskWidget(
+                            todo: snapshot.data![index],
+                            onUpdatedTask: () {
+                              setState(() {});
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(snapshot.error.toString()),
               );
             }
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ],

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/utils/images.dart';
-import 'package:todo_app/utils/time_utils.dart';
 import '../../models/todo_model.dart';
 import '../database/local_database.dart';
 import '../models/category_model.dart';
 import '../utils/colors.dart';
 
 class TaskItem extends StatelessWidget {
-  TodoModel? model;
+  TodoModel model;
   final VoidCallback onDeleted;
   final VoidCallback onSelected;
   final ValueChanged<TodoModel> onCompleted;
@@ -40,25 +39,26 @@ class TaskItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: (){
-                    onCompleted(model!);
+                  onTap: () {
+                    onCompleted(model);
                   },
                   child: Container(
-                    width: 16,
-                    height: 16,
                     decoration: BoxDecoration(
-                      color: model!.isCompleted==1?Colors.green:Colors.transparent,
+                        color: model.isCompleted == 1
+                            ? Colors.green
+                            : Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: Colors.white,
                           width: 2,
-                        )
-                    ),
+                        )),
+                    height: 20,
+                    width: 20,
                   ),
                 ),
-                SizedBox(width: 20,),
+                SizedBox(width: 10,),
                 Padding(
-                  padding: const EdgeInsets.only(right: 174),
+                  padding: const EdgeInsets.only(right: 160),
                   child: Container(
                     child: Text(
                       model!.title,
