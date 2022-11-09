@@ -131,6 +131,7 @@ class LocalDatabase {
       );
 
       var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
+      await Future.delayed(Duration(seconds: 4));
       return list;
     }
   }

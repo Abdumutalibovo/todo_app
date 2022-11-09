@@ -6,6 +6,7 @@ import '../database/local_database.dart';
 import '../models/todo_model.dart';
 import '../theme_provider.dart';
 import '../widgets/task_item.dart';
+import '../widgets/task_item_shimmer.dart';
 import '../widgets/update_task_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -88,6 +89,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget todayTodos(isLight) {
     return ExpansionTile(
+      initiallyExpanded: true,
       iconColor: isLight?Colors.black:Colors.white,
       title: Text(
         'Uncompleted'.tr(),
@@ -148,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(snapshot.error.toString()),
                 );
               }
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: TaskItemShimmer());
             },
           ),
         ),
@@ -158,6 +160,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget completedTodos(isLight) {
     return ExpansionTile(
+      initiallyExpanded: true,
       iconColor: isLight?Colors.black:Colors.white,
       title: Text(
         'Completed'.tr(),
@@ -216,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text(snapshot.error.toString()),
               );
             }
-            return const Center(child: CircularProgressIndicator());
+            return TaskItemShimmer();
           },
         ),
       ],
