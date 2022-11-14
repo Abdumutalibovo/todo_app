@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/screens/start_screen_page.dart';
 import 'package:todo_app/utils/colors.dart';
 import 'package:todo_app/utils/images.dart';
@@ -69,9 +70,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                top: 24,
-                right: 250,
+              padding:  EdgeInsets.only(
+                top: 24.h,
+                right: 250.w,
               ),
               child: TextButton(
                   onPressed: () {
@@ -80,14 +81,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   },
                   child: Text(
                     "SKIP",
-                    style: TextStyle(fontSize: 20, color: Colors.white38),
+                    style: TextStyle(fontSize: 20.sp, color: Colors.white38),
                   )),
             ),
             SizedBox(
-              height: 430,
+              height: 430.h,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 40),
+              padding: const EdgeInsets.only(left: 40).r,
               child: Container(
                 height: 4,
                 child: ListView.separated(
@@ -97,10 +98,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   itemCount: 3,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      width: 26.28,
-                      height: 4,
+                      width: 26.28.w,
+                      height: 4.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(56),
+                        borderRadius: BorderRadius.circular(56).r,
                         color: _curr == index
                             ? Color(0xFF32B5FF)
                             : Color(0xFFC4C4C4),
@@ -109,31 +110,31 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(
-                      width: 8,
+                      width: 8.w,
                     );
                   },
                 ),
               ),
             ),
             SizedBox(
-              height: 230,
+              height: 230.h,
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20).r,
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
+                        textStyle: TextStyle(fontSize: 20.sp),
                       ),
                       onPressed: () {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => exit(0)));
                       },
-                      child: const Text('Back',
+                      child:  Text('Back',
                           style:
-                              TextStyle(fontSize: 20, color: Colors.white54)),
+                              TextStyle(fontSize: 20.sp, color: Colors.white54)),
                     ),
                   ),
                   Container(
@@ -148,7 +149,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     },
                     child: Text('Next',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                         )),
                   ))
                 ]),

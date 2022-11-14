@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../service/storage_service.dart';
 import '../theme_provider.dart';
@@ -20,14 +21,14 @@ class _ThemeModeItemState extends State<ThemeModeItem> {
     return InkWell(
       onTap: () {},
       child: Container(
-        height: 48,
+        height: 48.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
                 Icon(Icons.light_mode),
-                SizedBox(width: 10),
+                SizedBox(width: 10.w),
                 Text("Ligth mode"),
               ],
             ),

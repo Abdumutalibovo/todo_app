@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo_app/screens/main_page.dart';
 import 'package:todo_app/screens/onboarding_page.dart';
 import 'package:todo_app/utils/images.dart';
 
@@ -11,15 +13,15 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   void initState() {
     super.initState();
     onNextPage();
   }
 
-  onNextPage(){
-    Future.delayed(Duration(seconds: 3),(){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>OnBoardingPage()));
+  onNextPage() {
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
     });
   }
 
@@ -30,13 +32,19 @@ class _SplashPageState extends State<SplashPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children:[
+        children: [
           Container(
               width: double.infinity,
               child: SvgPicture.asset(MyImages.ic_accepted)),
-          SizedBox(height: 20,),
-          Text("UpTodo", style: TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.w600),)
-        ] ,
+          SizedBox(
+            height: 20.h,
+          ),
+          Text(
+            "UpTodo",
+            style: TextStyle(
+                fontSize: 40.sp, color: Colors.white, fontWeight: FontWeight.w600),
+          )
+        ],
       ),
     );
   }

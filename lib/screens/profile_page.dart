@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/screens/theme_mode_item.dart';
@@ -45,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(children: [
                 Container(
                   child: CircleAvatar(
-                    radius: 45,
+                    radius: 45.r,
                     backgroundImage: NetworkImage("https://i.pravatar.cc/300"),),
                 ),
                 SizedBox(
@@ -54,14 +55,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text(
                   accountName,
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 25.sp,
                   ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 10).r,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -69,17 +70,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: MediaQuery.of(context).size.height * 0.085,
                         width: MediaQuery.of(context).size.width * 0.41,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6).r,
                             color: isLight?Colors.grey:MyColors.C_363636),
-                        child: const Center(
+                        child:  Center(
                             child: Text('10 Task left',
-                                style: TextStyle(fontSize: 20))),
+                                style: TextStyle(fontSize: 20.sp))),
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.085,
                         width: MediaQuery.of(context).size.width * 0.41,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6).r,
                             color: isLight?Colors.grey:MyColors.C_363636,),
                         child: const Center(
                             child: Text(
@@ -95,11 +96,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Container(
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(left: 30).r,
                     child: const Text('settings',),),
                 changeLaunguage(isLight),
                 Padding(
-                  padding: const EdgeInsets.only(left: 32, right: 10),
+                  padding: const EdgeInsets.only(left: 32, right: 10).r,
                   child: ThemeModeItem(),
                 ),
                 SizedBox(
@@ -107,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Container(
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(left: 30).r,
                     child: const Text('Account',)),
                 changeName(isLight),
                 titleWidget(MyImages.ic_key, 'Change account password', isLight),
@@ -137,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.only(left: 14),
         child: SvgPicture.asset(
           icon,
-          width: 26,
+          width: 26.w,
           color: isLight?Colors.black:Colors.white,
         ),
       ),
@@ -147,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       trailing: SvgPicture.asset(
         MyImages.ic_right,
-        width: 26,
+        width: 26.w,
         color: isLight?Colors.black:Colors.white,
       ),
     );
@@ -159,12 +160,12 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.only(left: 14),
         child: SvgPicture.asset(
           MyImages.ic_log_out,
-          width: 26,
+          width: 26.w,
         ),
       ),
-      title: const Text(
+      title:  Text(
         'Log out',
-        style: TextStyle(color: Colors.red, fontSize: 18),
+        style: TextStyle(color: Colors.red, fontSize: 18.sp),
       ),
     );
   }

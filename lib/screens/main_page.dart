@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/screens/profile_page.dart';
@@ -66,7 +67,7 @@ class _MainPageState extends State<MainPage> {
         body: _pages[_selectedIndex],
         backgroundColor: isLight?Colors.white:Colors.black,
         appBar: AppBar(
-          toolbarHeight: 80,
+          toolbarHeight: 80.h,
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
@@ -81,7 +82,7 @@ class _MainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16),
-                        ),
+                        ).r,
                         color: MyColors.C_363636,
                       ),
                       child: Column(
@@ -94,24 +95,24 @@ class _MainPageState extends State<MainPage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white.withOpacity(0.87),
-                                fontSize: 20),
+                                fontSize: 20.sp),
                           ),
-                          SizedBox(height: 48),
+                          SizedBox(height: 48.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(150, 48),
+                                  minimumSize:  const Size(150, 48),
                                   backgroundColor: MyColors.C_363636,
                                   shadowColor: null,
                                   elevation: 0,
                                 ),
                                 onPressed: () {},
-                                child: const Text(
+                                child:  Text(
                                   "Cancel",
                                   style: TextStyle(
-                                      fontSize: 16, color: MyColors.C_8875FF),
+                                      fontSize: 16.sp, color: MyColors.C_8875FF),
                                 ),
                               ),
                               ElevatedButton(
@@ -120,9 +121,9 @@ class _MainPageState extends State<MainPage> {
                                   backgroundColor: MyColors.C_363636,
                                 ),
                                 onPressed: () {},
-                                child: const Text(
+                                child:  Text(
                                   "Use Password",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 16.sp),
                                 ),
                               ),
                             ],
@@ -138,34 +139,34 @@ class _MainPageState extends State<MainPage> {
           title: Text(titles[_selectedIndex],),
           actions: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(50).r,
               child: CircleAvatar(
-                radius: 24,
+                radius: 24.r,
                 backgroundImage: NetworkImage(
                   "https://i.pravatar.cc/300",
                 ),
               ),
             ),
-            SizedBox(width: 12),
+            SizedBox(width: 12.w),
           ],
         ),
         floatingActionButton: Stack(children: [
           Positioned(
-            bottom: 34,
-            left: 155.9,
+            bottom: 34.h,
+            left: 155.9.w,
             child: Container(
-              width: 90,
-              height: 45.5,
+              width: 90.w,
+              height: 45.5.h,
               decoration: BoxDecoration(
-                  color: Color(0xff121212),
-                  borderRadius: BorderRadius.only(
+                  color: const Color(0xff121212),
+                  borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.elliptical(76, 80),
-                      bottomRight: Radius.elliptical(76, 80))),
+                      bottomRight: Radius.elliptical(76, 80)).r),
             ),
           ),
           Positioned(
-            bottom: 40,
-            left: 165,
+            bottom: 40.h,
+            left: 165.w,
             child: InkWell(
               onTap: () {
                 showModalBottomSheet(
@@ -183,8 +184,8 @@ class _MainPageState extends State<MainPage> {
                 );
               },
               child: Container(
-                  height: 72,
-                  width: 72,
+                  height: 72.h,
+                  width: 72.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: MyColors.C_8687E7,
@@ -193,7 +194,7 @@ class _MainPageState extends State<MainPage> {
                     child: Text(
                       "+",
                       style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 32.sp,
                           fontWeight: FontWeight.w400,
                           color: Colors.white),
                     ),
@@ -203,7 +204,7 @@ class _MainPageState extends State<MainPage> {
         ]),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: SizedBox(
-          height: 80,
+          height: 80.h,
           child: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: (index) {
@@ -211,7 +212,7 @@ class _MainPageState extends State<MainPage> {
                 _selectedIndex = index;
               });
             },
-            iconSize: 28,
+            iconSize: 28.w,
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.white.withOpacity(0.50),
             backgroundColor: MyColors.C_363636,

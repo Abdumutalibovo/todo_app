@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingItem extends StatelessWidget {
   IconData settingIcon;
@@ -17,14 +18,14 @@ class SettingItem extends StatelessWidget {
     return InkWell(
       onTap: onSettingTap,
       child: Container(
-        height: 48,
+        height: 48.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
                 Icon(settingIcon),
-                SizedBox(width: 10),
+                SizedBox(width: 10.w),
                 Text(settingTitle),
               ],
             ),

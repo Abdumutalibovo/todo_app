@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/utils/colors.dart';
 import '../../database/local_database.dart';
@@ -37,30 +38,30 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
         key: formKey,
         child: Container(
           width: double.infinity,
-          height: 500,
+          height: 500.h,
           decoration: BoxDecoration(
             color: MyColors.C_363636,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                topLeft: Radius.circular(15), topRight: Radius.circular(15)).r,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.only(top: 25, left: 25),
+                padding: EdgeInsets.only(top: 25, left: 25).r,
                 child: Text(
                   "Add Task",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w700),
                 ),
               ),
               SizedBox(
-                height: 8,
+                height: 8.h,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16).r,
                 child: TextFormField(
                   onSaved: (val) {
                     newTitle = val ?? "";
@@ -76,9 +77,9 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                   ),
                 ),
               ),
-              SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16).r,
                 child: TextFormField(
                   onSaved: (val) {
                     newDescription = val ?? "";
@@ -95,11 +96,11 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Row(
                 children: [
                   SizedBox(
-                    width: 16,
+                    width: 16.w,
                   ),
                   IconButton(
                     onPressed: () async {
@@ -127,7 +128,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     ),
                   ),
                   SizedBox(
-                    width: 24,
+                    width: 24.w,
                   ),
                   InkWell(
                       onTap: () {
@@ -135,7 +136,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                             context: context,
                             builder: (((context) => AlertDialog(
                                   contentPadding: EdgeInsets.only(
-                                      top: 8, left: 8, right: 8),
+                                      top: 8, left: 8, right: 8).r,
                                   title: Center(
                                       child: Text(
                                     'Choose Category',
@@ -195,7 +196,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 45),
+                                                  left: 45).r,
                                               child: InkWell(
                                                   onTap: (() {
                                                     Navigator.pop(context);
@@ -215,8 +216,8 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                                                   });
                                                 },
                                                 child: Container(
-                                                    height: 50,
-                                                    width: 120,
+                                                    height: 50.h,
+                                                    width: 120.w,
                                                     color: MyColors.C_8687E7,
                                                     child: Container(
                                                         child: Center(
@@ -234,13 +235,13 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       },
                       child: SvgPicture.asset(MyImages.ic_pin)),
                   SizedBox(
-                    width: 32,
+                    width: 32.w,
                   ),
                   InkWell(
                       onTap: () {
                         showDialog(context: context, builder: (((context)=>StatefulBuilder(builder: (context,state){
                           return AlertDialog(
-                            contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8),
+                            contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8).r,
                             title: Center(child: Text('Task Priority',style: TextStyle(color: Colors.white),)),
                             backgroundColor: MyColors.C_363636,
                             content: Container(
@@ -270,20 +271,20 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                                               });
                                             },
                                             child: Container(
-                                              width: 50,
-                                              height: 50,
+                                              width: 50.w,
+                                              height: 50.h,
                                               decoration: BoxDecoration(
                                                   color: isSelected == index ? MyColors.C_8687E7 : Color(0xFF272727),
-                                                  borderRadius: BorderRadius.circular(6),
+                                                  borderRadius: BorderRadius.circular(6).r,
                                               ),
                                               child: Column(
                                                 children: [
-                                                  SizedBox(height: 5,),
+                                                  SizedBox(height: 5.h,),
                                                   Container(
-                                                    child: SvgPicture.asset(MyImages.ic_flags, width: 26,),),
-                                                  SizedBox(height: 3,),
+                                                    child: SvgPicture.asset(MyImages.ic_flags, width: 26.w,),),
+                                                  SizedBox(height: 3.h,),
                                                   Container(
-                                                    child: Text((index+1).toString(),style: TextStyle(fontSize: 22, color:
+                                                    child: Text((index+1).toString(),style: TextStyle(fontSize: 22.sp, color:
                                                     Colors.white),),
                                                   ),
                                                 ],
@@ -298,7 +299,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 45),
+                                        padding: const EdgeInsets.only(left: 45).r,
                                         child: InkWell(
                                             onTap: (() {
                                               Navigator.pop(context);
@@ -312,8 +313,8 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                                             newprority = newprority;
                                           });},
                                         child: Container(
-                                          height: 50,
-                                          width: 120,
+                                          height: 50.h,
+                                          width: 120.w,
                                           color: MyColors.C_8687E7,
                                           child: Container(
                                               child: Center(child: Text('Save', style: TextStyle(color: Colors.white,),))),
@@ -329,7 +330,8 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       },
                       child: SvgPicture.asset(MyImages.ic_flags)),
                   SizedBox(
-                    width: 160,
+                    width: 160.w
+                    ,
                   ),
                   InkWell(
                       onTap: () {
@@ -352,7 +354,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text("Qayerdadur xatolik mavjud!", style: TextStyle(fontSize: 20),),
+                              title: Text("Qayerdadur xatolik mavjud!", style: TextStyle(fontSize: 20.sp),),
                               content: Text("\nHamasn toldirishingiz kerak"),
                               actions: [
                                 TextButton(
@@ -369,7 +371,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 ],
               ),
               SizedBox(
-                height: 24,
+                height: 24.h,
               ),
             ],
           ),

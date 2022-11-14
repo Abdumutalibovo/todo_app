@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/utils/images.dart';
 import '../../database/local_database.dart';
@@ -41,26 +42,26 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
             color: MyColors.C_363636,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15),
-                topRight: Radius.circular(15)),
+                topRight: Radius.circular(15).r),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.only(top: 25, left: 25),
+                padding: EdgeInsets.only(top: 25, left: 25).r,
                 child: Text(
                   "Edit Task",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w700),
                 ),
               ),
               SizedBox(
-                height: 8,
+                height: 8.h,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16,right: 16),
+                padding: const EdgeInsets.only(left: 16,right: 16).r,
                 child: TextFormField(
                   initialValue: widget.todo.title,
                   onSaved: (val) {
@@ -78,9 +79,9 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+               SizedBox(height: 12.h),
               Padding(
-                padding: const EdgeInsets.only(left: 16,right: 16),
+                padding: const EdgeInsets.only(left: 16,right: 16).r,
                 child: TextFormField(
                   style: TextStyle(color: Colors.white),
                   initialValue: widget.todo.description,
@@ -99,7 +100,7 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 taskDate.toString() == "null"
                     ? ""
@@ -110,7 +111,7 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
               Row(
                 children: [
                   SizedBox(
-                    width: 16,
+                    width: 16.w,
                   ),
                   IconButton(
                     onPressed: () async {
@@ -142,16 +143,16 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                     ),
                   ),
                   SizedBox(
-                    width: 24,
+                    width: 24.w,
                   ),
                   SvgPicture.asset(MyImages.ic_pin),
                   SizedBox(
-                    width: 32,
+                    width: 32.w,
                   ),
                   InkWell(
                       onTap: (){
                         showDialog(context: context, builder: (((context)=>AlertDialog(
-                          contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8),
+                          contentPadding: EdgeInsets.only(top: 8,left: 8,right: 8).r,
                           title: Center(child: Text('Task Priority',style: TextStyle(color: Colors.white),)),
                           backgroundColor: MyColors.C_363636,
                           content: Container(
@@ -161,7 +162,7 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                             child: Column(
                               children: [
                                 Divider(thickness: 0.7,color: Colors.white70,),
-                                SizedBox(height: 5,),
+                                SizedBox(height: 5.h,),
                                 Container(
                                   height: MediaQuery.of(context).size.height*0.32,
                                   width: MediaQuery.of(context).size.height*0.9,
@@ -180,19 +181,19 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                                             });
                                           },
                                           child: Container(
-                                            width: 50,
-                                            height: 50,
+                                            width: 50.w,
+                                            height: 50.h,
                                             decoration: BoxDecoration(
                                                 color: Color(0xFF272727),
                                                 borderRadius: BorderRadius.circular(6)
                                             ),
                                             child: Column(
                                               children: [
-                                                SizedBox(height: 5,),
+                                                SizedBox(height: 5.h,),
                                                 Container(
-                                                  child: SvgPicture.asset(MyImages.ic_flags, width: 26,),),
-                                                SizedBox(height: 3,),
-                                                Container(child: Text(index.toString(),style: TextStyle(fontSize: 22, color:
+                                                  child: SvgPicture.asset(MyImages.ic_flags, width: 26.w,),),
+                                                SizedBox(height: 3.h,),
+                                                Container(child: Text(index.toString(),style: TextStyle(fontSize: 22.sp, color:
                                                 Colors.white),),)
                                               ],
                                             ),
@@ -206,7 +207,7 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 45),
+                                      padding: const EdgeInsets.only(left: 45).r,
                                       child: InkWell(
                                           onTap: (() {
                                             Navigator.pop(context);
@@ -220,8 +221,8 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                                             newpriorty = newpriorty;
                                           });
                                         }, child: Container(
-                                        height: 50,
-                                        width: 120,
+                                        height: 50.h,
+                                        width: 120.w,
                                         color: MyColors.C_8687E7,
                                         child: Container(
                                             child: Center(child: Text('Save', style: TextStyle(color: Colors.white),)))))
@@ -234,24 +235,27 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                       },
                       child: SvgPicture.asset(MyImages.ic_flags)),
                   SizedBox(
-                    width: 160,
+                    width: 160.w,
                   ),
                   InkWell(
-                    onTap: () {
-                      formKey.currentState?.save();
-                      var newTodo = TodoModel(
-                        id: widget.todo.id,
-                        title: newTitle,
-                        description: newDescription,
-                        date: taskDate.toString(),
-                        priority: newpriorty,
-                        categoryId: newCategory,
-                        isCompleted: 0,
-                      );
-                      LocalDatabase.updateTaskById(newTodo);
-                      widget.onUpdatedTask();
+                    onTap: (){
                       Navigator.pop(context);
                     },
+                    // onTap: () {
+                    //   formKey.currentState?.save();
+                    //   var newTodo = TodoModel(
+                    //     id: widget.todo.id,
+                    //     title: newTitle,
+                    //     description: newDescription,
+                    //     date: taskDate.toString(),
+                    //     priority: newpriorty,
+                    //     categoryId: newCategory,
+                    //     isCompleted: 0,
+                    //   );
+                    //   LocalDatabase.updateTaskById(newTodo);
+                    //   widget.onUpdatedTask();
+                    //   Navigator.pop(context);
+                    // },
                     child: SvgPicture.asset(MyImages.ic_sent),
                   ),
                 ],

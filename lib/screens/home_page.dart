@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/utils/colors.dart';
 import '../database/local_database.dart';
@@ -33,17 +34,17 @@ class _HomePageState extends State<HomePage> {
           children: [
             searchTodoes(isLight),
             Padding(
-              padding: const EdgeInsets.only(left: 10,right: 10),
+              padding: const EdgeInsets.only(left: 10,right: 10).r,
               child: todayTodos(isLight),
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.h,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10,right: 10),
+              padding: const EdgeInsets.only(left: 10,right: 10).r,
               child: completedTodos(isLight),
             ),
-            const SizedBox(height: 24,),
+             SizedBox(height: 24.h,),
           ],
         ),
       ),
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget searchTodoes(isLight){
     return  Padding(
-      padding:  const EdgeInsets.only(left: 24, right: 24),
+      padding:  const EdgeInsets.only(left: 24, right: 24).r,
       child: TextField(
         onChanged: (val){
           setState(() {
@@ -60,16 +61,16 @@ class _HomePageState extends State<HomePage> {
           });
         },
         style: const TextStyle(color: Colors.white),
-        decoration: const InputDecoration(
+        decoration:  InputDecoration(
           hintText: "Search for your task...",
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.search,
             color: Colors.grey,
           ),
           hintStyle: TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.w400,
-              fontSize: 16),
+              fontSize: 16.sp),
           filled: true,
           fillColor: Colors.black,
           enabledBorder: OutlineInputBorder(
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 100, 99, 99),
               )),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: BorderRadius.all(Radius.circular(8).r),
               borderSide: BorderSide(
                 color: Color.fromARGB(255, 100, 99, 99),
               )),
@@ -105,11 +106,11 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.hasData) {
                 countOfUncompleted = snapshot.data!.length;
                 if (snapshot.data!.isEmpty) {
-                  return const Center(
+                  return  Center(
                       child: Icon(
                         Icons.file_copy_outlined,
                         color: Colors.white,
-                        size: 96,
+                        size: 96.r,
                       ));
                 }
                 return ListView.builder(
@@ -174,11 +175,11 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               countOfCompleted = snapshot.data!.length;
               if (snapshot.data!.isEmpty) {
-                return const Center(
+                return  Center(
                     child: Icon(
                       Icons.file_copy_outlined,
                       color: Colors.white,
-                      size: 96,
+                      size: 96.r,
                     ));
               }
               return ListView.builder(

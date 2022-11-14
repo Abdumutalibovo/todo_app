@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/screens/login_page.dart';
 import 'package:todo_app/screens/main_page.dart';
@@ -36,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24),
+            padding:  EdgeInsets.only(left: 24, right: 24).r,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -46,55 +47,55 @@ class _RegisterPageState extends State<RegisterPage> {
                 Text(
                   "Register",
                   style: TextStyle(
-                      fontSize: 36,
+                      fontSize: 36.sp,
                       color: Colors.white70,
                       fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 Text(
                   "Username",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     color: Colors.white70,
                   ),
                 ),
                 SizedBox(
-                  height: 12,
+                  height: 12.h,
                 ),
                 MyTextField(context, "Enter your Username", "Username"),
                 SizedBox(
-                  height: 25,
+                  height: 25.h,
                 ),
                 Text(
                   "Password",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     color: Colors.white70,
                   ),
                 ),
                 SizedBox(
-                  height: 12,
+                  height: 12.h,
                 ),
                 MyTextField(context, "• • • • • • • • • • • •", "Password"),
                 SizedBox(
-                  height: 25,
+                  height: 25.h,
                 ),
                 Text(
                   "Confirm Password",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     color: Colors.white70,
                   ),
                 ),
                 SizedBox(
-                  height: 12,
+                  height: 12.h,
                 ),
                 MyTextField(
                     context, "• • • • • • • • • • • •", "Confirm Password"),
                 SizedBox(
-                  height: 50,
+                  height: 50.h,
                 ),
                 InkWell(
                   onTap: () {
@@ -105,31 +106,31 @@ class _RegisterPageState extends State<RegisterPage> {
                           builder: (BuildContext context) {
                             return Container(
                               width: double.infinity,
-                              height: 380,
+                              height: 380.h,
                               decoration: BoxDecoration(
                                 color: MyColors.C_363636,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(15),
-                                    topRight: Radius.circular(15)),
+                                    topRight: Radius.circular(15).r),
                               ),
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: 36,
+                                    height: 36.h,
                                   ),
                                   SvgPicture.asset(MyImages.ic_touch),
                                   SizedBox(
-                                    height: 24,
+                                    height: 24.h,
                                   ),
                                   Text(
                                     "  Please hold your finger at the \nfingerprint scanner to verify your \n                      identity",
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 24,
+                                      fontSize: 24.sp,
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 68,
+                                    height: 68.h,
                                   ),
                                   Row(
                                     mainAxisAlignment:
@@ -147,13 +148,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                             "Cancel",
                                             style: TextStyle(
                                                 color: MyColors.C_8687E7,
-                                                fontSize: 20),
+                                                fontSize: 20.sp),
                                           )),
                                       ElevatedButton(
                                           onPressed: () {},
                                           child: Text(
                                             "Use Password",
-                                            style: TextStyle(fontSize: 20),
+                                            style: TextStyle(fontSize: 20.sp),
                                           ),
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: MyColors.C_8687E7,
@@ -172,28 +173,28 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 31,
+                  height: 31.h,
                 ),
                 Image.asset(MyImages.im_or),
                 SizedBox(
-                  height: 29,
+                  height: 29.h,
                 ),
                 MyButtonImage(
                     "Register with Goole", Colors.black, MyImages.ic_google),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 MyButtonImage(
                     "Register with Appe", Colors.black, MyImages.ic_appe),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Don’t have an account?",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: Color(0xFF979797),
                         )),
                     InkWell(
@@ -203,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                       child: Text(" Login",
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.white70,
                           )),
                     )
