@@ -7,7 +7,6 @@ class LocalDatabase {
   static String tableName = "todoTable";
   static LocalDatabase getInstance = LocalDatabase._init();
   Database? _database;
-
   LocalDatabase._init();
 
   Future<Database> getDb() async {
